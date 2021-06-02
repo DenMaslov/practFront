@@ -1,17 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import './index.css';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+
+import App from './App';
+import Search from './components/search/search'
+import Header from './components/header/header';
+import Favorite from './components/favorite/favorite';
+import DetailVideo from './components/detailVideo/detailVideo';
+
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
+
+
+const routing = (
+	<Router>
+		<Provider store={store}>
+			<React.StrictMode>
+				<Header />
+				<Switch>
+					<Route exact path="/" component={App} />
+					<Route path="/search" component={Search} />
+					<Route path="/favorite" component={Favorite} />
+					<Route path="/video/:videoId" component={DetailVideo} />
+				</Switch>
+			</React.StrictMode>
+		</Provider>
+	</Router>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(routing, document.getElementById('root'));
+

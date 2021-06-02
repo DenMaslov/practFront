@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import React from 'react';
+
+import Videos from './components/videos';
+import VideoLoadingComponent from './components/VideoLoadingComponent';
+
 import './App.css';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchVideos } from './redux/actions/videos';
+
+
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+	const VideoLoading = VideoLoadingComponent(Videos);
+
+	const dispatch = useDispatch();
+	const videos = useSelector(({ videos }) => videos.items);
+	const isLoaded = useSelector(({ videos }) => videos.isLoaded);
+
+	React.useEffect(() => {
+		dispatch(fetchVideos());
+	}, []);
+
+	return (
+		<div className="App">
+			<h1>LAST ADDED:</h1>
+			<VideoLoading isLoading={!isLoaded} videos={videos} />
+		</div>
+	);
+};
 
 export default App;
